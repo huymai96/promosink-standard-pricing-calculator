@@ -1,4 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body{ @apply bg-gray-50 text-gray-900; }
+
+:root { --card: 255 255 255; }
+body { @apply bg-gray-50 text-gray-900; }
+.card { @apply rounded-2xl border border-gray-200 bg-white shadow-sm; }
+.card-title { @apply border-b border-gray-100 px-5 py-3 font-semibold; }
+.card-body { @apply p-5; }
+.input { @apply rounded-lg border px-3 py-2 w-full; }
+.btn { @apply inline-flex items-center justify-center rounded-xl bg-black px-4 py-2 text-white hover:bg-gray-800 disabled:opacity-50; }
+.toggle { @apply flex items-center gap-2 cursor-pointer select-none; }
+.badge { @apply inline-flex items-center text-xs rounded-full bg-gray-100 px-2 py-1 text-gray-700; }
+pre.quote { @apply whitespace-pre-wrap text-sm leading-6 bg-gray-50 border rounded-xl p-4; }
