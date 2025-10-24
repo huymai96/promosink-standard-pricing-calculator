@@ -22,7 +22,9 @@ export default function QuotePreview({ result }:{ result: any }){
   const linesL: string[] = [];
   linesL.push(`${result.numPieces} light shirts`);
   locsL.forEach((loc, i) => {
-    linesL.push(`${loc.numColors} colors Location ${i+1}: ${currency.format(loc.basePriceLight)} ea`);
+    const base = `${currency.format(loc.basePriceLight)} ea`;
+    const adds = Array.isArray(loc.adds) && loc.adds.length ? ` — add-ons: ${loc.adds.join(', ')} = ${currency.format(loc.additionalCost)}` : '';
+    linesL.push(`${loc.numColors} colors Location ${i+1}: ${base}${adds}`);
   });
   const totalScreensL = locsL.reduce((sum, loc)=> sum + (loc.numColors ?? 0), 0);
   linesL.push(`${totalScreensL} screens at ${currency.format(15)} ea`);
@@ -38,7 +40,8 @@ export default function QuotePreview({ result }:{ result: any }){
   locsD.forEach((loc, i) => {
     const base = Number(loc.tableBase).toFixed(2);
     const flash = Number(loc.flashAdd).toFixed(2);
-    linesD.push(`${loc.colorsPlusUnderbase} colors Location ${i+1}: $(${base}+${flash} flash)`);
+    const adds = Array.isArray(loc.adds) && loc.adds.length ? ` — add-ons: ${loc.adds.join(', ')} = ${currency.format(loc.additionalCost)}` : '';
+    linesD.push(`${loc.colorsPlusUnderbase} colors Location ${i+1}: $(${base}+${flash} flash)${adds}`);
   });
   const totalScreensD = locsD.reduce((sum, loc)=> sum + ((loc.numColors ?? 0) + 1), 0);
   const baseColorsD = locsD.reduce((sum, loc)=> sum + (loc.numColors ?? 0), 0);

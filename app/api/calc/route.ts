@@ -31,17 +31,17 @@ function calcLight(loc: LocationInput, numPieces: number) {
   const basePriceLight = getPriceFromTable(numPieces, loc.numColors)
   const lightScreenFee = 15 * loc.numColors
   let additionalCost = 0
-  if (loc.cmykSetup) additionalCost += 150
-  if (loc.specialLocation) additionalCost += 0.35 * numPieces
-  if (loc.bulkSpecial) additionalCost += 0.75 * numPieces
-  if (loc.syntheticFabric) additionalCost += 0.35 * numPieces
-  if (loc.specialtyInks) additionalCost += 0.35 * loc.numColors * numPieces
-  if (loc.reflectiveGlowWater) additionalCost += 1 * numPieces
+  const adds: string[] = []
+  if (loc.cmykSetup) { additionalCost += 150; adds.push('CMYK setup $150'); }
+  if (loc.specialLocation) { additionalCost += 0.35 * numPieces; adds.push('Special location $0.35 ea'); }
+  if (loc.bulkSpecial) { additionalCost += 0.75 * numPieces; adds.push('Bulk/hard to handle $0.75 ea'); }
+  if (loc.syntheticFabric) { additionalCost += 0.35 * numPieces; adds.push('Synthetic/regular hard $0.35 ea'); }
+  if (loc.specialtyInks) { additionalCost += 0.35 * loc.numColors * numPieces; adds.push('Specialty inks $0.35 × colors'); }
+  if (loc.reflectiveGlowWater) { additionalCost += 1 * numPieces; adds.push('Reflective/Glow/Water $1.00 ea'); }
   const locationLightBaseTotal = (basePriceLight * numPieces) + additionalCost
   const totalLight = locationLightBaseTotal + lightScreenFee
-  return { basePriceLight, lightScreenFee, additionalCost, locationLightBaseTotal, totalLight, numColors: loc.numColors }
+  return { basePriceLight, lightScreenFee, additionalCost, adds, locationLightBaseTotal, totalLight, numColors: loc.numColors }
 }
-
 function calcDark(loc: LocationInput, numPieces: number) {
   const colorsPlusUnderbase = loc.numColors + 1
   const tableBase = getPriceFromTable(numPieces, colorsPlusUnderbase)
@@ -49,17 +49,17 @@ function calcDark(loc: LocationInput, numPieces: number) {
   const darkBasePerPiece = tableBase + flashAdd
   const darkScreenFee = 15 * colorsPlusUnderbase
   let additionalCost = 0
-  if (loc.cmykSetup) additionalCost += 150
-  if (loc.specialLocation) additionalCost += 0.35 * numPieces
-  if (loc.bulkSpecial) additionalCost += 0.75 * numPieces
-  if (loc.syntheticFabric) additionalCost += 0.35 * numPieces
-  if (loc.specialtyInks) additionalCost += 0.35 * loc.numColors * numPieces
-  if (loc.reflectiveGlowWater) additionalCost += 1 * numPieces
+  const adds: string[] = []
+  if (loc.cmykSetup) { additionalCost += 150; adds.push('CMYK setup $150'); }
+  if (loc.specialLocation) { additionalCost += 0.35 * numPieces; adds.push('Special location $0.35 ea'); }
+  if (loc.bulkSpecial) { additionalCost += 0.75 * numPieces; adds.push('Bulk/hard to handle $0.75 ea'); }
+  if (loc.syntheticFabric) { additionalCost += 0.35 * numPieces; adds.push('Synthetic/regular hard $0.35 ea'); }
+  if (loc.specialtyInks) { additionalCost += 0.35 * loc.numColors * numPieces; adds.push('Specialty inks $0.35 × colors'); }
+  if (loc.reflectiveGlowWater) { additionalCost += 1 * numPieces; adds.push('Reflective/Glow/Water $1.00 ea'); }
   const locationDarkBaseTotal = (darkBasePerPiece * numPieces) + additionalCost
   const totalDark = locationDarkBaseTotal + darkScreenFee
-  return { darkBasePerPiece, tableBase, flashAdd, colorsPlusUnderbase, darkScreenFee, additionalCost, locationDarkBaseTotal, totalDark, numColors: loc.numColors }
+  return { darkBasePerPiece, tableBase, flashAdd, colorsPlusUnderbase, darkScreenFee, additionalCost, adds, locationDarkBaseTotal, totalDark, numColors: loc.numColors }
 }
-
 function calcRush(blankArrivalDate?: string, shippingDate?: string, totalPrice?: number) {
   if (!blankArrivalDate || !shippingDate || !totalPrice) return { rushFee: 0, rushPct: 0 }
   const start = new Date(blankArrivalDate)
