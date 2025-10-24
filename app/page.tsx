@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import QuotePreview from '@/components/QuotePreview';
+import QuotePreview from '../components/QuotePreview';
 
 type Loc = {
   numColors: number;
